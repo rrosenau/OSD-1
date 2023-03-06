@@ -685,9 +685,15 @@ $startpreset = $waardespreset.started
 $Endime = (Get-Date)
 $TimeSpan = New-TimeSpan -Start $startpreset -End $Endime
 $Timecompleted = $TimeSpan.ToString("mm' minutes 'ss' seconds'")
+
 $Working_path = "C:\OSDCloud\OS"
 $file_version = @(Get-ChildItem $Working_Path\* -include *.esd)
 $winversion = $file_version.name -replace ".{4}$"
+
+$Working_path_drv = "C:\Drivers"
+$driverpack = @(Get-ChildItem $Working_Path_drv\* -include *.msi)
+$driverpackname = $driverpack.name -replace ".{4}$"
+
 $psversion = $PSVersionTable.PSVersion
 $paths = @(
 	"HKLM:\SOFTWARE\Microsoft\Office\ClickToRun",
@@ -791,12 +797,16 @@ $body = ConvertTo-Json -Depth 4 @{
         @{
          name  = 'Visual C++ Versions'
          value = $VClistsplit
-       },           
+       },  
+        @{
+         name  = 'Driver Pack'
+         value = $driverpackname
+       }, 
         @{
          name  = 'Sofware Updates'
          value = $resultsoftwareupdatessplit
        },        
-       @{
+        @{
          name  = 'Driver Updates'
          value = $resultdriverupdatessplit
        }
